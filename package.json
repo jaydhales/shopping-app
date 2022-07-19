@@ -5,9 +5,13 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
+    "dexie": "3.2.2",
+    "dexie-react-hooks": "1.1.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "react-scripts": "4.0.0"
+    "react-scripts": "4.0.0",
+    "workbox-cli": "6.5.3",
+    "workbox-sw": "6.5.3"
   },
   "devDependencies": {
     "@babel/runtime": "7.13.8",
