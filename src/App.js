@@ -5,13 +5,7 @@ export default function App() {
   const [quantityInput, setQuantity] = useState("");
   const [nameInput, setName] = useState("");
   const [priceInput, setPrice] = useState("");
-  const [list, setList] = useState([
-    {
-      itemName: "Dummy",
-      quantity: 2,
-      price: 500
-    }
-  ]);
+  const [list, setList] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -30,10 +24,36 @@ export default function App() {
     let entry = {
       itemName: nameInput,
       quantity: quantityInput,
-      price: priceInput
+      price: priceInput,
+      done: false
     };
 
     list.length > 0 ? setList([...list, entry]) : setList([entry]);
+  };
+
+  const handleCheckbox = (e) => {
+    const newState = list.map((obj) => {
+      if (obj.itemName === e.target.parentNode.id) {
+        if (e.target.checked) {
+          return { ...obj, done: true };
+        } else {
+          return { ...obj, done: false };
+        }
+      }
+
+      // 👇️ otherwise return object as is
+      return obj;
+    });
+
+    setList(newState);
+  };
+
+  const removeItem = (e) => {
+    const newState = list.filter(
+      (obj) => obj.itemName !== e.target.parentNode.id
+    );
+
+    setList(newState);
   };
 
   return (
@@ -83,16 +103,20 @@ export default function App() {
         <div className="list">
           <p>List of Items:</p>
           {list.length > 0 &&
-            list.map(({ itemName, quantity, price }) => (
-              <div key={itemName} className="listItems">
-                <input type="checkbox" onChange={console.log(this)} />
+            list.map(({ itemName, quantity, price, done }) => (
+              <div
+                key={itemName}
+                id={itemName}
+                className={done ? "listItems done" : "listItems"}
+              >
+                <input type="checkbox" onChange={handleCheckbox} />
                 <div>
                   <p>{itemName}</p>
                   <p>
                     ${price} x {quantity}
                   </p>
                 </div>
-                <button>X</button>
+                <button onClick={removeItem}>X</button>
               </div>
             ))}
 

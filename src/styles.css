@@ -46,7 +46,7 @@ input[type="submit"] {
   background: rgb(216, 216, 216);
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  text-align: center;
   margin: 5px 0;
 }
 
@@ -62,4 +62,21 @@ button {
   background: red;
   color: white;
   border: none;
+}
+
+button:hover {
+  background: brown;
+}
+
+button:active {
+  background: red;
+}
+
+.done {
+  background: green;
+  color: white;
+}
+
+.done p {
+  text-decoration: line-through;
 }
