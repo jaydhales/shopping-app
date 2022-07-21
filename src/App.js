@@ -1,17 +1,22 @@
 import { useState } from "react";
+import Dexie from "dexie";
+import { useLiveQuery } from "dexie-react-hooks";
 import "./styles.css";
+
+const db = new Dexie("ShoppingList");
+db.version(1).stores({ item: "++id,name,quantity,price,isPurchased" });
 
 export default function App() {
   const [quantityInput, setQuantity] = useState("");
   const [nameInput, setName] = useState("");
   const [priceInput, setPrice] = useState("");
-  const [list, setList] = useState([]);
+  const list = useLiveQuery(() => db.item.toArray(), []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     clearForm();
-    updateList();
+    addItemToDb();
   };
 
   const clearForm = () => {
@@ -20,41 +25,36 @@ export default function App() {
     setPrice("");
   };
 
-  const updateList = () => {
-    let entry = {
-      itemName: nameInput,
+  const addItemToDb = async () => {
+    await db.item.add({
+      name: nameInput,
       quantity: quantityInput,
       price: priceInput,
-      done: false
-    };
-
-    list.length > 0 ? setList([...list, entry]) : setList([entry]);
-  };
-
-  const handleCheckbox = (e) => {
-    const newState = list.map((obj) => {
-      if (obj.itemName === e.target.parentNode.id) {
-        if (e.target.checked) {
-          return { ...obj, done: true };
-        } else {
-          return { ...obj, done: false };
-        }
-      }
-
-      // 👇️ otherwise return object as is
-      return obj;
+      isPurchased: false
     });
-
-    setList(newState);
   };
 
-  const removeItem = (e) => {
-    const newState = list.filter(
-      (obj) => obj.itemName !== e.target.parentNode.id
-    );
+  const handleCheckbox = async (e) => {
+    const id = Number(e.target.parentNode.id);
 
-    setList(newState);
+    if (e.target.checked) {
+      await db.item.update(id, {
+        isPurchased: true
+      });
+    } else {
+      await db.item.update(id, {
+        isPurchased: false
+      });
+    }
   };
+
+  const removeItem = async (e) => {
+    const id = Number(e.target.parentNode.id);
+
+    await db.item.delete(id);
+  };
+
+  if (!list) return null;
 
   return (
     <div className="App">
@@ -103,15 +103,15 @@ export default function App() {
         <div className="list">
           <p>List of Items:</p>
           {list.length > 0 &&
-            list.map(({ itemName, quantity, price, done }) => (
+            list.map(({ name, quantity, price, isPurchased, id }) => (
               <div
-                key={itemName}
-                id={itemName}
-                className={done ? "listItems done" : "listItems"}
+                key={id}
+                id={id}
+                className={isPurchased ? "listItems isPurchased" : "listItems"}
               >
                 <input type="checkbox" onChange={handleCheckbox} />
                 <div>
-                  <p>{itemName}</p>
+                  <p>{name}</p>
                   <p>
                     ${price} x {quantity}
                   </p>

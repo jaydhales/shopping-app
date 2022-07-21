@@ -12,6 +12,8 @@ header {
 
 main {
   padding: 1rem;
+  max-width: 400px;
+  margin: auto;
 }
 
 form {
@@ -47,7 +49,7 @@ input[type="submit"] {
   display: flex;
   justify-content: space-between;
   text-align: center;
-  margin: 5px 0;
+  margin: 5px 1rem;
 }
 
 input[type="checkbox"],
@@ -72,11 +74,11 @@ button:active {
   background: red;
 }
 
-.done {
+.isPurchased {
   background: green;
   color: white;
 }
 
-.done p {
+.isPurchased p {
   text-decoration: line-through;
 }
