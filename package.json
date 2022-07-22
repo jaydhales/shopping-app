@@ -1,7 +1,7 @@
 {
-  "name": "insta-clone",
+  "name": "shopping-app",
   "version": "1.0.0",
-  "description": "Webstack Challenge",
+  "description": "Built with React.Js\nUsed Dexie.js to implement Storage with IndexedDB \nApp is a pwa",
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
