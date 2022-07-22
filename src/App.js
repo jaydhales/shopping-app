@@ -63,7 +63,7 @@ export default function App() {
       </header>
 
       <main>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="false">
           <label htmlFor="nameInput">
             Name of Item:
             <input
@@ -109,7 +109,11 @@ export default function App() {
                 id={id}
                 className={isPurchased ? "listItems isPurchased" : "listItems"}
               >
-                <input type="checkbox" onChange={handleCheckbox} />
+                <input
+                  type="checkbox"
+                  onChange={handleCheckbox}
+                  checked={isPurchased}
+                />
                 <div>
                   <p>{name}</p>
                   <p>
